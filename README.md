@@ -14,7 +14,7 @@ RBMediaRecorder is a modern JavaScript library for recording audio and video usi
 To install the package, use npm:
 
 ```bash
-npm install fix-webm-duration
+npm i rippleberry-camera-recorder
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ npm install fix-webm-duration
 ### Import the Library
 
 ```javascript
-import RBMediaRecorder from "fix-webm-duration"
+import RBMediaRecorder from "rippleberry-camera-recorder"
 ```
 
 ### Initialize the Recorder
