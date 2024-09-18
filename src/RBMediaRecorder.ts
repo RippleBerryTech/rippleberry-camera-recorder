@@ -254,20 +254,20 @@ export const bestSupportedMimeType = (media: "video" | "audio") => {
 }
 //utils.ts
 
-export async function closeStopStream(stream: MediaStream | null | undefined) {
-  if (!stream) return
-  //   stream.getTracks().forEach((track) => track.stop())
-  if (stream.getVideoTracks && stream.getAudioTracks) {
-    stream.getVideoTracks().map((track) => {
-      stream.removeTrack(track)
-      track.stop()
-    })
-    stream.getAudioTracks().map((track) => {
-      stream.removeTrack(track)
-      track.stop()
-    })
-  }
-}
+// export async function closeStream(stream: MediaStream | null | undefined) {
+//   if (!stream) return
+//   //   stream.getTracks().forEach((track) => track.stop())
+//   if (stream.getVideoTracks && stream.getAudioTracks) {
+//     stream.getVideoTracks().map((track) => {
+//       stream.removeTrack(track)
+//       track.stop()
+//     })
+//     stream.getAudioTracks().map((track) => {
+//       stream.removeTrack(track)
+//       track.stop()
+//     })
+//   }
+// }
 
 export interface IOptions {
   audioBitsPerSecond?: number

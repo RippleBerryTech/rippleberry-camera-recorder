@@ -5,7 +5,6 @@ logs
 node_modules
 package-lock.json
 dist
-build
 *.local
 
 # Editor directories and files
