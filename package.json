@@ -1,0 +1,40 @@
+{
+  "name": "rippleberry-camera-recorder",
+  "version": "1.0.0",
+  "description": " RippleBerry video recorder - simple camera recorder to record video with ease",
+  "author": "RippleBerryTech  <ripplrberry.net> ",
+  "license": "ISC",
+  "homepage": "https://github.com/RippleBerryTech/rippleberry-camera-recorder#readme",
+  "main": "build/index.js",
+  "type": "module",
+  "files": [
+    "build",
+    "README.md"
+  ],
+  "dependencies": {
+    "fix-webm-duration": "^1.0.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rippleberry",
+    "video",
+    "camera",
+    "video",
+    "recorder",
+    "camera",
+    "recorder"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RippleBerryTech/rippleberry-camera-recorder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RippleBerryTech/rippleberry-camera-recorder/issues"
+  }
+}
