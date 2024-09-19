@@ -7,7 +7,7 @@
 
     "incremental": true,
     "target": "es2017",
-    "outDir": "build",
+    "outDir": "dist",
     "moduleResolution": "Node",
     "moduleDetection": "force",
     "skipDefaultLibCheck": true,
@@ -25,6 +25,6 @@
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
     "typeRoots": ["node_modules/@types", "src/RBMediaRecorder.d.ts"]
   },
-  "exclude": ["node_modules", "build"],
+  "exclude": ["node_modules", "dist"],
   "compileOnSave": false
 }

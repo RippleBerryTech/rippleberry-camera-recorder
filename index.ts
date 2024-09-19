@@ -1,1 +1,1 @@
-export * from "./src/RBMediaRecorder"
+export * from "./src/RBCameraRecorder"

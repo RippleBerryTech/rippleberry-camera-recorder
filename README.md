@@ -1,139 +1,156 @@
-# RBMediaRecorder
+# Rippleberry Camera Recorder
 
-RBMediaRecorder is a modern JavaScript library for recording audio and video using the MediaRecorder API. It provides an easy-to-use interface for capturing media, handling device selection, and ensuring compatibility across different browsers.
+`rippleberry-camera-recorder` is a powerful and easy-to-use JavaScript library for recording audio and video from user media devices. It provides a simple API for managing media streams, recording, and exporting blobs with various encoding options.
 
 ## Features
 
-- **Cross-browser Support**: Automatically selects the best supported MIME type for audio and video.
-- **Customizable Options**: Adjust video/audio quality and device selection.
-- **Automatic Blob Duration Fix**: Fixes the duration of recorded WebM files.
-- **Easy Integration**: Simple API for starting and stopping recordings.
+- **Cross-Browser Support**: Compatible with modern browsers.
+- **Flexible Configuration**: Customize audio and video settings.
+- **Easy Integration**: Quick setup for recording media.
+- **Blob Fixing**: Automatically fixes WebM blob duration.
+- **Device Management**: Retrieve available media devices.
+- **Status Tracking**: Access the current status of the recorder (idle, previewing, recording).
 
 ## Installation
 
-To install the package, use npm:
+You can install the package via npm:
 
-```bash
-npm i rippleberry-camera-recorder
+```javascript
+npm install rippleberry-camera-recorder
 ```
 
 ## Usage
 
-### Import the Library
+### Basic Setup
+
+To get started, import the library and create an instance of the `RBCameraRecorder` class:
 
 ```javascript
-import RBMediaRecorder from "rippleberry-camera-recorder"
+import RBCameraRecorder from "rippleberry-camera-recorder"
+
+// Creating a recorder instance with default options
+const recorder = new RBCameraRecorder()
 ```
 
-### Initialize the Recorder
+### Configuration Options
 
-Create a new instance of `RBMediaRecorder` with optional configuration:
+You can customize the recorder by providing options in the constructor. All options are optional.
 
 ```javascript
-const options = {
-  mimeType: "video/webm; codecs=vp8, opus",
+const recorder = new RBCameraRecorder({
+  mimeType: "video/webm; codecs=vp8, opus", // Optional: Specify your desired mime type
   audio: {
-    deviceId: "your-audio-device-id",
+    deviceId: "your-audio-device-id", // Optional: Specify audio device ID
   },
   video: {
-    deviceId: "your-video-device-id",
-    width: { ideal: 1280 },
-    height: { ideal: 720 },
+    deviceId: "your-video-device-id", // Optional: Specify video device ID
+    width: 1280, // Optional: Set video width
+    height: 720, // Optional: Set video height
+    frameRate: 30, // Optional: Set video frame rate
   },
-}
-
-const recorder = new RBMediaRecorder(options)
+})
 ```
 
-### Start Recording
+### Accessing Status
 
-Begin recording by calling the `start()` method:
+You can access the current status of the recorder using the `status` property, which can be one of the following values: `idle`, `previewing`, or `recording`.
+
+```javascript
+console.log("Current status:", recorder.status) // Outputs the current status
+```
+
+### Recording Media
+
+1. **Preview the Media:**
+   Start by accessing the user's media devices and displaying a preview.
+
+   ```javascript
+   try {
+     const stream = await recorder.preview()
+     console.log("Preview started:", stream)
+   } catch (error) {
+     console.error("Error during preview:", JSON.parse(error))
+   }
+   ```
+
+2. **Start Recording:**
+   To start recording the media stream, call the `start` method.
+
+   ```javascript
+   try {
+     const stream = await recorder.start()
+     console.log("Recording started:", stream)
+   } catch (error) {
+     console.error("Error starting recording:", JSON.parse(error))
+   }
+   ```
+
+3. **Stop Recording:**
+   Once you're done recording, stop the media recorder.
+
+   ```javascript
+   try {
+     const blob = await recorder.stop()
+     console.log("Recording stopped. Blob:", blob)
+   } catch (error) {
+     console.error("Error stopping recording:", JSON.parse(error))
+   }
+   ```
+
+### Getting Connected Devices
+
+You can retrieve the list of available audio and video devices:
 
 ```javascript
 try {
-  const stream = await recorder.start()
-  console.log("Recording started", stream)
+  const devices = await recorder.getConnectedDevices()
+  console.log("Connected devices:", devices)
 } catch (error) {
-  console.error("Error starting recording", error)
+  console.error("Error fetching devices:", JSON.parse(error))
 }
 ```
 
-### Stop Recording
+## Example
 
-To stop the recording and retrieve the media blob, call the `stop()` method:
-
-```javascript
-try {
-  const blob = await recorder.stop()
-  console.log("Recording stopped", blob)
-  // You can now use the blob, e.g., save it or upload it.
-} catch (error) {
-  console.error("Error stopping recording", error)
-}
-```
-
-### Check Device Compatibility
-
-You can check if the selected MIME type is supported:
+Here’s a complete example demonstrating how to use the `rippleberry-camera-recorder`:
 
 ```javascript
-if (recorder.isSupported()) {
-  console.log("MIME type is supported")
-} else {
-  console.error("MIME type is not supported")
-}
-```
+import RBCameraRecorder from "rippleberry-camera-recorder"
 
-### Get Connected Media Devices
+const recorder = new RBCameraRecorder({
+  mimeType: "video/webm; codecs=vp8, opus", // Optional configuration
+})
 
-Retrieve a list of available audio and video devices:
+async function startRecording() {
+  try {
+    await recorder.preview()
+    console.log("Current status:", recorder.status) // Check status after preview
+    const stream = await recorder.start()
+    console.log("Recording started:", stream)
+    console.log("Current status:", recorder.status) // Check status after starting recording
 
-```javascript
-const devices = await recorder.getConnectedDevices()
-console.log("Connected devices:", devices)
-```
-
-## Supported Options
-
-### Options Structure
-
-```typescript
-interface IOptions {
-  mimeType?: string
-  audio?: {
-    deviceId?: string
+    // Stop recording after 10 seconds
+    setTimeout(async () => {
+      const blob = await recorder.stop()
+      console.log("Recording stopped. Blob:", blob)
+      console.log("Current status:", recorder.status) // Check status after stopping
+    }, 10000)
+  } catch (error) {
+    console.error("An error occurred:", JSON.parse(error))
   }
-  video?: {
-    deviceId?: string
-    width?: { min?: number; ideal?: number; max?: number }
-    height?: { min?: number; ideal?: number; max?: number }
-    frameRate?: { ideal?: number; max?: number }
-  }
-  audioBitsPerSecond?: number
-  videoBitsPerSecond?: number
 }
+
+startRecording()
 ```
-
-## Additional Methods
-
-- `getSupportedVideosOptions()`: Retrieve a list of supported video options.
-- `getSupportedAudiosOptions()`: Retrieve a list of supported audio options.
-
-## Notes
-
-- Ensure that your application has permissions to access the camera and microphone.
-- Test the library in various browsers to confirm compatibility and performance.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+Contributions are welcome! Please feel free to submit a Pull Request or report issues.
 
-For any issues or feature requests, please open an issue in the GitHub repository.
+## Contact
 
----
-
-Feel free to reach out if you have any questions or need assistance! Happy recording!
+For any inquiries or support, please contact [info@rippleberry.net].
