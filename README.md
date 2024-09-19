@@ -48,6 +48,8 @@ const recorder = new RBCameraRecorder({
     height: 720, // Optional: Set video height
     frameRate: 30, // Optional: Set video frame rate
   },
+  audioBitsPerSecond: 128000, // Optional: Set audio bit rate
+  videoBitsPerSecond: 2500000, // Optional: Set video bit rate
 })
 ```
 
@@ -109,6 +111,16 @@ try {
   console.error("Error fetching devices:", JSON.parse(error))
 }
 ```
+
+## Additional Methods
+
+- `getSupportedVideosOptions()`: Retrieve a list of supported video options.
+- `getSupportedAudiosOptions()`: Retrieve a list of supported audio options.
+
+## Notes
+
+- Ensure that your application has permissions to access the camera and microphone.
+- Test the library in various browsers to confirm compatibility and performance.
 
 ## Example
 
