@@ -1,11 +1,14 @@
 {
   "name": "rippleberry-camera-recorder",
-  "version": "1.0.5",
-  "description": " RippleBerry video recorder - simple camera recorder to record video with ease",
+  "version": "1.0.6",
+  "description": "A simple and easy to use webcam recorder for your web applications",
   "author": "RippleBerryTech  <ripplrberry.net> ",
   "license": "ISC",
   "homepage": "https://github.com/RippleBerryTech/rippleberry-camera-recorder#readme",
   "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "type": "module",
   "files": [
     "dist",

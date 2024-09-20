@@ -267,14 +267,23 @@ RippleBerry Camera Recorder works across all modern browsers and platforms, ensu
 
 ## 🎥 Demo
 
-Check out the demo application at [Demo Link](#).
+Check out the demo application at [Demo Link](https://rippleberry-camera-recorder-website.netlify.app).
 
 ---
 
 ## 📝 License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License.
 
+---
+
+## Contributing
+
+Contributions are welcome!
 For issues, suggestions, or contributions, feel free to open an issue or submit a pull request in the repository!
 
 ---
+
+## Contact
+
+For any inquiries or support, please contact [dev@rippleberry.net].
