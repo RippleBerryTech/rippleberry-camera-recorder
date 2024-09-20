@@ -1,168 +1,280 @@
-# Rippleberry Camera Recorder
+# 📷 RippleBerry Camera Recorder
 
-`rippleberry-camera-recorder` is a powerful and easy-to-use JavaScript library for recording audio and video from user media devices. It provides a simple API for managing media streams, recording, and exporting blobs with various encoding options.
+**RippleBerry Camera Recorder** is a powerful, yet easy-to-use JavaScript library that allows developers to capture video and audio from connected media devices. Built on top of the native MediaRecorder API, this package simplifies the process of recording media streams in modern web applications.
 
-## Features
+---
 
-- **Cross-Browser Support**: Compatible with modern browsers.
-- **Flexible Configuration**: Customize audio and video settings.
-- **Easy Integration**: Quick setup for recording media.
-- **Blob Fixing**: Automatically fixes WebM blob duration.
-- **Device Management**: Retrieve available media devices.
-- **Status Tracking**: Access the current status of the recorder (idle, previewing, recording).
+## 🚀 Key Features
 
-## Installation
+- **Multi-Device Support:** Seamlessly record from various audio and video devices.
+- **Simple Configuration:** Easily customize video and audio settings with flexible options.
+- **Built-in Permission Handling:** Automatically manage permissions for camera and microphone access.
+- **Control Methods:** Intuitive methods for starting, stopping, and managing media recordings.
+- **Cross-Browser/Platform Compatibility:** No need to worry about compatibility! It works smoothly on Android 📱, iOS 🍏, and Windows 💻.
+- **Auto Duration Fixing:** Automatically fixes the duration for `webm` blobs, ensuring accurate recording length.
 
-You can install the package via npm:
+---
 
-```javascript
+## 🛠️ Installation
+
+Install the package using npm or yarn:
+
+```bash
 npm install rippleberry-camera-recorder
+# or
+yarn add rippleberry-camera-recorder
 ```
 
-## Usage
+---
 
-### Basic Setup
+## 📖 Usage
 
-To get started, import the library and create an instance of the `RBCameraRecorder` class:
+### 1. Import the Library
+
+Start by importing the necessary components from the package:
 
 ```javascript
-import RBCameraRecorder from "rippleberry-camera-recorder"
+import RBCameraRecorder, {
+  getConnectedDevices,
+  getSupportedVideosOptions,
+  getSupportedAudiosOptions,
+  checkPermission,
+  requestPermission,
+} from "rippleberry-camera-recorder"
+```
 
-// Creating a recorder instance with default options
+### 2. Initializing the Recorder
+
+You can initialize the recorder **with** or **without** options, depending on your use case.
+
+#### **With Options:**
+
+You can customize the recorder's behavior by passing an options object when initializing:
+
+```javascript
+const options = {
+  video: {
+    width: 1280,
+    height: 720,
+    deviceId: "your-video-device-id", // Optional
+  },
+  audio: {
+    deviceId: "your-audio-device-id", // Optional
+  },
+  mimeType: "video/webm", // Optional
+  audioBitsPerSecond: 128000, // Optional
+  videoBitsPerSecond: 2500000, // Optional
+}
+
+const recorder = new RBCameraRecorder(options)
+```
+
+#### **Without Options:**
+
+You can initialize the recorder without passing any specific options. This will use the default media devices and settings:
+
+```javascript
 const recorder = new RBCameraRecorder()
 ```
 
-### Configuration Options
+### 3. Handling Permissions
 
-You can customize the recorder by providing options in the constructor. All options are optional.
-
-```javascript
-const recorder = new RBCameraRecorder({
-  mimeType: "video/webm; codecs=vp8, opus", // Optional: Specify your desired mime type
-  audio: {
-    deviceId: "your-audio-device-id", // Optional: Specify audio device ID
-  },
-  video: {
-    deviceId: "your-video-device-id", // Optional: Specify video device ID
-    width: 1280, // Optional: Set video width
-    height: 720, // Optional: Set video height
-    frameRate: 30, // Optional: Set video frame rate
-  },
-  audioBitsPerSecond: 128000, // Optional: Set audio bit rate
-  videoBitsPerSecond: 2500000, // Optional: Set video bit rate
-})
-```
-
-### Accessing Status
-
-You can access the current status of the recorder using the `status` property, which can be one of the following values: `idle`, `previewing`, or `recording`.
+Before accessing the camera or microphone, ensure permissions are granted. RippleBerry makes it simple:
 
 ```javascript
-console.log("Current status:", recorder.status) // Outputs the current status
-```
-
-### Recording Media
-
-1. **Preview the Media:**
-   Start by accessing the user's media devices and displaying a preview.
-
-   ```javascript
-   try {
-     const stream = await recorder.preview()
-     console.log("Preview started:", stream)
-   } catch (error) {
-     console.error("Error during preview:", JSON.parse(error))
-   }
-   ```
-
-2. **Start Recording:**
-   To start recording the media stream, call the `start` method.
-
-   ```javascript
-   try {
-     const stream = await recorder.start()
-     console.log("Recording started:", stream)
-   } catch (error) {
-     console.error("Error starting recording:", JSON.parse(error))
-   }
-   ```
-
-3. **Stop Recording:**
-   Once you're done recording, stop the media recorder.
-
-   ```javascript
-   try {
-     const blob = await recorder.stop()
-     console.log("Recording stopped. Blob:", blob)
-   } catch (error) {
-     console.error("Error stopping recording:", JSON.parse(error))
-   }
-   ```
-
-### Getting Connected Devices
-
-You can retrieve the list of available audio and video devices:
-
-```javascript
-try {
-  const devices = await recorder.getConnectedDevices()
-  console.log("Connected devices:", devices)
-} catch (error) {
-  console.error("Error fetching devices:", JSON.parse(error))
+const permissions = await checkPermission()
+if (!permissions.camera || !permissions.microphone) {
+  await requestPermission()
 }
 ```
 
-## Additional Methods
+### 4. Get Connected Devices
 
-- `getSupportedVideosOptions()`: Retrieve a list of supported video options.
-- `getSupportedAudiosOptions()`: Retrieve a list of supported audio options.
-
-## Notes
-
-- Ensure that your application has permissions to access the camera and microphone.
-- Test the library in various browsers to confirm compatibility and performance.
-
-## Example
-
-Here’s a complete example demonstrating how to use the `rippleberry-camera-recorder`:
+To display or list all available audio and video devices:
 
 ```javascript
-import RBCameraRecorder from "rippleberry-camera-recorder"
+const { videoDevices, audioDevices } = await getConnectedDevices()
+```
 
-const recorder = new RBCameraRecorder({
-  mimeType: "video/webm; codecs=vp8, opus", // Optional configuration
-})
+### 5. Preview the Video
 
-async function startRecording() {
-  try {
-    await recorder.preview()
-    console.log("Current status:", recorder.status) // Check status after preview
+You can preview the video stream before starting the recording. Simply attach the stream to a video element:
+
+```javascript
+const previewStream = await recorder.getPreviewStream()
+videoElement.srcObject = previewStream
+videoElement.play()
+```
+
+### 6. Start and Stop Recording
+
+**To start recording:**
+
+```javascript
+const stream = await recorder.start()
+// Optionally, use the stream to show the live video
+```
+
+**To stop recording:**
+
+```javascript
+const videoBlob = await recorder.stop()
+// You now have a Blob containing the recorded media (e.g., for download or further processing)
+```
+
+---
+
+## ⚙️ Optional Methods
+
+### Changing Devices
+
+**Switch Video Device:**
+
+```javascript
+await recorder.changeVideoDevice(newDeviceId)
+```
+
+**Switch Audio Device:**
+
+```javascript
+await recorder.changeAudioDevice(newDeviceId)
+```
+
+### Supported Configuration Options
+
+**Get Supported Video Options:**
+
+Retrieve all supported video settings like resolution, frame rate, etc.:
+
+```javascript
+const supportedVideoOptions = await getSupportedVideosOptions()
+console.log(supportedVideoOptions)
+```
+
+**Get Supported Audio Options:**
+
+Retrieve all supported audio settings such as bit rate, sample rate, etc.:
+
+```javascript
+const supportedAudioOptions = await getSupportedAudiosOptions()
+console.log(supportedAudioOptions)
+```
+
+---
+
+## 🧑‍💻 Example
+
+Here’s a simple React example showing how to use the RippleBerry Camera Recorder:
+
+```javascript
+import React, { useRef, useState } from "react"
+import RBCameraRecorder, {
+  checkPermission,
+  requestPermission,
+} from "rippleberry-camera-recorder"
+
+const App = () => {
+  const [recorder, setRecorder] = useState(null)
+  const [isRecording, setIsRecording] = useState(false)
+  const videoRef = useRef(null)
+
+  const startRecording = async () => {
+    if (!recorder) {
+      const options = {
+        /* your custom options */
+      }
+      const newRecorder = new RBCameraRecorder(options)
+      setRecorder(newRecorder)
+    }
+
     const stream = await recorder.start()
-    console.log("Recording started:", stream)
-    console.log("Current status:", recorder.status) // Check status after starting recording
-
-    // Stop recording after 10 seconds
-    setTimeout(async () => {
-      const blob = await recorder.stop()
-      console.log("Recording stopped. Blob:", blob)
-      console.log("Current status:", recorder.status) // Check status after stopping
-    }, 10000)
-  } catch (error) {
-    console.error("An error occurred:", JSON.parse(error))
+    videoRef.current.srcObject = stream
+    setIsRecording(true)
   }
+
+  const stopRecording = async () => {
+    const blob = await recorder.stop()
+    const url = URL.createObjectURL(blob)
+    // Optionally download or save the video
+    setIsRecording(false)
+  }
+
+  return (
+    <div>
+      <video ref={videoRef} controls />
+      {!isRecording ? (
+        <button onClick={startRecording}>Start Recording</button>
+      ) : (
+        <button onClick={stopRecording}>Stop Recording</button>
+      )}
+    </div>
+  )
 }
 
-startRecording()
+export default App
 ```
 
-## License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🔍 API Reference
 
-## Contributing
+### `RBCameraRecorder`
 
-Contributions are welcome! Please feel free to submit a Pull Request or report issues.
+#### Constructor: `RBCameraRecorder(options?: IOptions)`
 
-## Contact
+Creates a new instance of the recorder with specified configuration options.
 
-For any inquiries or support, please contact [info@rippleberry.net].
+#### Methods:
+
+- **`isSupported(): boolean`**  
+  Checks if the provided mime type is supported by the browser.
+
+- **`getPreviewStream(): Promise<MediaStream>`**  
+  Returns a media stream for previewing before recording starts.
+
+- **`start(): Promise<MediaStream>`**  
+  Starts the recording process and returns the media stream.
+
+- **`stop(): Promise<Blob>`**  
+  Stops the recording and returns the captured media as a `Blob`.
+
+- **`reset(): void`**  
+  Resets the recorder to its initial state.
+
+- **`changeVideoDevice(deviceId: string): Promise<void>`**  
+  Switches to a different video input device.
+
+- **`changeAudioDevice(deviceId: string): Promise<void>`**  
+  Switches to a different audio input device.
+
+- **`getSupportedVideosOptions(): Promise<VideoOptions[]>`**  
+  Retrieves a list of supported video configuration options.
+
+- **`getSupportedAudiosOptions(): Promise<AudioOptions[]>`**  
+  Retrieves a list of supported audio configuration options.
+
+---
+
+## 🌐 Cross-Browser and Platform Compatibility
+
+RippleBerry Camera Recorder works across all modern browsers and platforms, ensuring seamless functionality on:
+
+- **Android 📱**
+- **iOS 🍏**
+- **Windows 💻**
+
+---
+
+## 🎥 Demo
+
+Check out the demo application at [Demo Link](#).
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+For issues, suggestions, or contributions, feel free to open an issue or submit a pull request in the repository!
+
+---
