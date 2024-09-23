@@ -1,6 +1,6 @@
 {
   "name": "rippleberry-camera-recorder",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple and easy to use webcam recorder for your web applications",
   "author": "RippleBerryTech  <ripplrberry.net> ",
   "license": "ISC",
@@ -25,13 +25,21 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "react",
     "rippleberry",
+    "webcam",
     "video",
     "camera",
-    "video",
     "recorder",
-    "camera",
-    "recorder"
+    "voice recording",
+    "video recording",
+    "media recording",
+    "getusermedia",
+    "Media Recorder",
+    "getDisplayMedia",
+    "video recorder",
+    "webcam recorder",
+    "camera recorder"
   ],
   "repository": {
     "type": "git",

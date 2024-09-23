@@ -15,6 +15,22 @@
 
 ---
 
+## 🌐 Cross-Browser and Platform Compatibility
+
+RippleBerry Camera Recorder works across all modern browsers and platforms, ensuring seamless functionality on:
+
+- **Android 📱**
+- **iOS 🍏**
+- **Windows 💻**
+
+---
+
+## 🎥 Demo
+
+Check out the demo application at [Demo Link](https://rippleberry-camera-recorder-website.netlify.app).
+
+---
+
 ## 🛠️ Installation
 
 Install the package using npm or yarn:
@@ -51,11 +67,13 @@ You can initialize the recorder **with** or **without** options, depending on yo
 
 You can customize the recorder's behavior by passing an options object when initializing:
 
+Keep in mind that some options may not be supported by all devices. so it's recommended to use the default options.
+
 ```javascript
 const options = {
   video: {
-    width: 1280,
-    height: 720,
+    width: 1280, // Optional
+    height: 720, // Optional
     deviceId: "your-video-device-id", // Optional
   },
   audio: {
@@ -252,22 +270,6 @@ Creates a new instance of the recorder with specified configuration options.
 
 - **`getSupportedAudiosOptions(): Promise<AudioOptions[]>`**  
   Retrieves a list of supported audio configuration options.
-
----
-
-## 🌐 Cross-Browser and Platform Compatibility
-
-RippleBerry Camera Recorder works across all modern browsers and platforms, ensuring seamless functionality on:
-
-- **Android 📱**
-- **iOS 🍏**
-- **Windows 💻**
-
----
-
-## 🎥 Demo
-
-Check out the demo application at [Demo Link](https://rippleberry-camera-recorder-website.netlify.app).
 
 ---
 

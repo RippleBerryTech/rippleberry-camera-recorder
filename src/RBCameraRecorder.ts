@@ -24,11 +24,17 @@ export default class RBMediaRecorder {
     this.options = options ?? {}
     this.options.mimeType =
       options?.mimeType ??
-      `${getSupportedVideosOptions()};${getSupportedAudiosOptions()}`
+      (getSupportedVideosOptions()[0] && getSupportedAudiosOptions()[0])
+        ? ""
+        : `${getSupportedVideosOptions()[0]};${getSupportedAudiosOptions()[0]}`
     this.mediaRecorder = new MediaRecorder(new MediaStream(), {
       mimeType:
         options?.mimeType ??
-        `${getSupportedVideosOptions()};${getSupportedAudiosOptions()}`,
+        (getSupportedVideosOptions()[0] && getSupportedAudiosOptions()[0])
+          ? ""
+          : `${getSupportedVideosOptions()[0]};${
+              getSupportedAudiosOptions()[0]
+            }`,
       audioBitsPerSecond: options?.audioBitsPerSecond ?? 128000,
       videoBitsPerSecond: options?.videoBitsPerSecond ?? 2500000,
     })
@@ -305,10 +311,10 @@ function getSupportedMimeTypes(
 }
 
 export function getSupportedVideosOptions() {
-  return getSupportedMimeTypes("video", videoTypes, codecs)
+  return getSupportedMimeTypes("video", videoTypes, codecs) ?? []
 }
 export function getSupportedAudiosOptions() {
-  return getSupportedMimeTypes("audio", audioTypes, codecs)
+  return getSupportedMimeTypes("audio", audioTypes, codecs) ?? []
 }
 
 export async function getConnectedDevices(): Promise<{
